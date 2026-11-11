@@ -19,7 +19,7 @@ if(Array.isArray(b.serviceIds)){if(b.serviceIds.length>100||b.serviceIds.some(id
  if(b.serviceIds.length){const {error:b2}=await db.from("staff_services").insert(b.serviceIds.map(service_id=>({staff_id:b.staffId,service_id})));if(b2)return NextResponse.json({error:"Erro na vinculação; revise a equipe."},{status:500})}
  return NextResponse.json({ok:true});
 }
-if(Number.isInteger(b.weekday)&&b.weekday!>=0&&b.weekday!<=6&&/^([01]\d|2[0-3]):[0-5]\d$/.test(b.startsAt||"")&&/^([01]\d|2[0-3]):[0-5]\d$/.test(b.endsAt||"")&&(b.startsAt||"")<(b.endsAt||"")){
+if(typeof b.weekday==="number"&&Number.isInteger(b.weekday)&&b.weekday>=0&&b.weekday<=6&&/^([01]\d|2[0-3]):[0-5]\d$/.test(b.startsAt||"")&&/^([01]\d|2[0-3]):[0-5]\d$/.test(b.endsAt||"")&&(b.startsAt||"")<(b.endsAt||"")){
  const {error:a}=await db.from("staff_hours").delete().eq("staff_id",b.staffId).eq("weekday",b.weekday);if(a)return NextResponse.json({error:"Erro ao alterar agenda"},{status:500});
  const {error:b2}=await db.from("staff_hours").insert({staff_id:b.staffId,weekday:b.weekday,starts_at:b.startsAt,ends_at:b.endsAt});return b2?NextResponse.json({error:"Não foi possível definir horário"},{status:500}):NextResponse.json({ok:true});
 }
