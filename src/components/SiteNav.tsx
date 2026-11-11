@@ -1,0 +1,5 @@
+"use client";
+import Link from "next/link";
+import {useState} from "react";
+import {ArrowUpRight,Menu,X} from "lucide-react";
+export function SiteNav(){const [open,setOpen]=useState(false);return <header className="site-nav"><Link href="/" className="brand" aria-label="ATELIER — início">ATELIER<span className="brand-mark">✳</span></Link><nav className={open?"nav-links open":"nav-links"} aria-label="Navegação principal"><Link onClick={()=>setOpen(false)} href="/#filosofia">Nossa essência</Link><Link onClick={()=>setOpen(false)} href="/#servicos">Serviços</Link><Link onClick={()=>setOpen(false)} href="/#equipe">Especialistas</Link><Link onClick={()=>setOpen(false)} href="/#espaco">O espaço</Link><Link onClick={()=>setOpen(false)} href="/admin">Gestão</Link></nav><Link href="/agendar" className="nav-book">Agendar horário <ArrowUpRight size={16}/></Link><button onClick={()=>setOpen(!open)} className="mobile-toggle" aria-label={open?"Fechar menu":"Abrir menu"} aria-expanded={open}>{open?<X/>:<Menu/>}</button></header>}
