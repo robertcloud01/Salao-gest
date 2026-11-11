@@ -23,7 +23,10 @@
     "@types/react-dom": "19.2.1",
     "typescript": "5.9.3",
     "eslint": "9.39.1",
-    "eslint-config-next": "16.0.8"
+    "eslint-config-next": "16.0.8",
+    "tailwindcss": "4.1.17",
+    "@tailwindcss/postcss": "4.1.17",
+    "postcss": "8.5.6"
   },
   "engines": {
     "node": ">=22"
