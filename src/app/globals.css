@@ -17,3 +17,5 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.hero-photo,.hero h1,.hero .btn,.hero-eyebrow,.hero-content p{animation:none}.service-card,.btn,.team-photo img,.service-photo img{transition:none}}
 
 .report-grids{display:grid;grid-template-columns:1fr 1fr;gap:45px;margin-top:65px}.report-rows>div{padding:21px 0;border-bottom:1px solid #d3c3b4;display:flex;align-items:center;justify-content:space-between;gap:25px;font-size:13px}.report-rows strong{color:#947760;font-weight:500}.footer-glare{overflow:hidden!important;min-height:54px}.footer-glare .btn{border:0;min-height:54px}@media(max-width:760px){.report-grids{grid-template-columns:1fr}}
+/* Booking navigation sits before the booking main; give it an opaque background. */
+body:has(.booking-page) .site-nav{position:relative;background:#2a231f;color:#fff}
