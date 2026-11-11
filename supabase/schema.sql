@@ -63,6 +63,7 @@ create table if not exists public.clients (
  notes text,
  created_at timestamptz not null default now()
 );
+create unique index if not exists clients_contact_unique on public.clients (lower(email),phone);
 create table if not exists public.bookings (
  id uuid primary key default gen_random_uuid(),
  client_id uuid not null references public.clients(id),
@@ -91,9 +92,8 @@ alter table public.staff_hours enable row level security;
 alter table public.staff_time_off enable row level security;
 alter table public.clients enable row level security;
 alter table public.bookings enable row level security;
-create policy "public active services" on public.services for select to anon,authenticated using(active);
-create policy "public active professionals" on public.staff for select to anon,authenticated using(active);
-create policy "public services offered" on public.staff_services for select to anon,authenticated using(true);
+-- No public read policies: the Next.js catalog API provides only approved fields.
+-- RLS is deny-by-default for all unauthenticated Data API queries.
 
 create or replace function public.available_slots(p_service uuid,p_staff uuid,p_date date)
 returns table(slot text)
@@ -138,7 +138,7 @@ begin
  select timezone into v_tz from public.salon_settings order by created_at limit 1;v_tz:=coalesce(v_tz,'America/Boa_Vista');
  v_start:=((p_date::text||' '||p_time)::timestamp at time zone v_tz);
  v_end:=v_start+make_interval(mins=>v_minutes+v_buffer);
- insert into public.clients(name,email,phone,notes) values(trim(p_name),lower(trim(p_email)),trim(p_phone),nullif(trim(coalesce(p_notes,'')),'')) returning id into v_client;
+ insert into public.clients(name,email,phone,notes) values(trim(p_name),lower(trim(p_email)),trim(p_phone),nullif(trim(coalesce(p_notes,'')),''))\n on conflict ((lower(email)),phone) do update set name=excluded.name returning id into v_client;
  insert into public.bookings(client_id,service_id,staff_id,starts_at,ends_at,price_cents_snapshot)
  values(v_client,p_service,p_staff,v_start,v_end,v_price) returning id into v_booking;
  return v_booking;
